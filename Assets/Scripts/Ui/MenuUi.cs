@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Sabanishi.SdiAssignment
 {
-    public class CharacterMenu:MonoBehaviour
+    public class MenuUi:MonoBehaviour
     {
         [SerializeField] private RectTransform root;
 

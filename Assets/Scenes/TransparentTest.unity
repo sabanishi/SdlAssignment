@@ -1670,7 +1670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterUi: {fileID: 2000702669}
-  characterMenu: {fileID: 1140897940}
+  menuUi: {fileID: 1140897940}
   windowUi: {fileID: 1877587028}
 --- !u!1 &841851165
 GameObject:
