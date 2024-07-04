@@ -15,8 +15,7 @@ namespace Sabanishi.SdiAssignment
         static void DoStuff()
         {
 #if UNITY_STANDALONE_OSX
-            Debug.Log("Test");
-            transparent();
+            //transparent();
 #endif
         }
     }
