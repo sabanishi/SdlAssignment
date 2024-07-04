@@ -10,24 +10,24 @@ namespace Sabanishi.SdiAssignment
     {
         [SerializeField] private CharacterUi characterUi;
         [SerializeField] private MenuUi menuUi;
-        [SerializeField] private WindowUi windowUi;
+        [SerializeField] private ConsoleUi consoleUi;
 
         public void Setup(CancellationToken token)
         {
             characterUi.Setup(token);
             menuUi.Setup(token);
-            windowUi.Setup(token);
+            consoleUi.Setup(token);
             
             characterUi.OpenMenuObservable.Subscribe(_=>menuUi.SetActive(true)).AddTo(token);
-            menuUi.SetWindowActiveObservable.Subscribe(windowUi.SetActive).AddTo(token);
-            windowUi.IsOpen.Subscribe(menuUi.SetIsOpenWindow).AddTo(token);
+            menuUi.SetConsoleActiveObservable.Subscribe(consoleUi.SetActive).AddTo(token);
+            consoleUi.IsOpen.Subscribe(menuUi.SetIsOpenConsole).AddTo(token);
         }
         
         public void Cleanup()
         {
             characterUi.Cleanup();
             menuUi.Cleanup();
-            windowUi.Cleanup();
+            consoleUi.Cleanup();
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Sabanishi.SdiAssignment
 {
-    public class WindowUi:MonoBehaviour
+    public class ConsoleUi:MonoBehaviour
     {
         [SerializeField] private GameObject root;
         [SerializeField] private Button closeButton;

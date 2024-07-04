@@ -5,6 +5,7 @@ using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Sabanishi.SdiAssignment
@@ -13,28 +14,28 @@ namespace Sabanishi.SdiAssignment
     {
         [SerializeField] private RectTransform root;
 
-        [SerializeField] private Button openWindowButton;
-        [SerializeField] private Button closeWindowButton;
+        [SerializeField] private Button openConsoleButton;
+        [SerializeField] private Button closeConsoleButton;
         [SerializeField] private Button quitEvent;
 
-        private Subject<bool> _setWindowActive;
-        public IObservable<bool> SetWindowActiveObservable => _setWindowActive;
+        private Subject<bool> _setConsoleActive;
+        public IObservable<bool> SetConsoleActiveObservable => _setConsoleActive;
 
         public void Setup(CancellationToken token)
         {
-            _setWindowActive = new Subject<bool>();
+            _setConsoleActive = new Subject<bool>();
             
-            openWindowButton.OnClickAsObservable().Subscribe(_=>OpenWindow()).AddTo(token);
-            closeWindowButton.OnClickAsObservable().Subscribe(_=>CloseWindow()).AddTo(token);
+            openConsoleButton.OnClickAsObservable().Subscribe(_=>OpenConsole()).AddTo(token);
+            closeConsoleButton.OnClickAsObservable().Subscribe(_=>CloseConsole()).AddTo(token);
             quitEvent.OnPointerDownAsObservable().Subscribe(_=>QuitApp()).AddTo(token);
             
             SetActive(false);
-            SetIsOpenWindow(false);
+            SetIsOpenConsole(false);
         }
 
         public void Cleanup()
         {
-            _setWindowActive.Dispose();
+            _setConsoleActive.Dispose();
         }
 
         public void SetActive(bool isActive)
@@ -49,29 +50,29 @@ namespace Sabanishi.SdiAssignment
             }
         }
 
-        public void SetIsOpenWindow(bool isOpen)
+        public void SetIsOpenConsole(bool isOpen)
         {
             if (isOpen)
             {
-                openWindowButton.gameObject.SetActive(false);
-                closeWindowButton.gameObject.SetActive(true);
+                openConsoleButton.gameObject.SetActive(false);
+                closeConsoleButton.gameObject.SetActive(true);
             }
             else
             {
-                openWindowButton.gameObject.SetActive(true);
-                closeWindowButton.gameObject.SetActive(false);
+                openConsoleButton.gameObject.SetActive(true);
+                closeConsoleButton.gameObject.SetActive(false);
             }
         }
 
-        private void OpenWindow()
+        private void OpenConsole()
         {
-            _setWindowActive.OnNext(true);
+            _setConsoleActive.OnNext(true);
             SetActive(false);
         }
 
-        private void CloseWindow()
+        private void CloseConsole()
         {
-            _setWindowActive.OnNext(false);
+            _setConsoleActive.OnNext(false);
             SetActive(false);
         }
 
