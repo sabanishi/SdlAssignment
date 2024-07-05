@@ -26,9 +26,8 @@ namespace Sabanishi.SdiAssignment
         public async UniTask Interpret(string text)
         {
             //TODO: 命令の解釈、実行処理
-            
-            _outputSubject.OnNext(text + "ぽよ");
             await UniTask.Delay(TimeSpan.FromSeconds(1));
+            _outputSubject.OnNext(text + "ぽよ");
         }
     }
 }

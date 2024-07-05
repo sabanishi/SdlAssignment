@@ -32,6 +32,7 @@ namespace Sabanishi.SdiAssignment
             _isAcceptingInput = new ReactiveProperty<bool>(true);
 
             InputModel.SendInputTextObservable.Subscribe(ReceiveInput).AddTo(token);
+            _interpreter.OutputObservable.Subscribe(x => AddHistoryElement(x, false)).AddTo(token);
         }
         
         public void Cleanup()
@@ -61,10 +62,19 @@ namespace Sabanishi.SdiAssignment
             UniTask.Void(async () =>
             {
                 if (!_isAcceptingInput.Value) return;
+                
+                //入力を履歴に追加
+                AddHistoryElement(input,true);
+                
                 _isAcceptingInput.Value = false;
                 await _interpreter.Interpret(input);
                 _isAcceptingInput.Value = true;
             });
+        }
+        
+        private void AddHistoryElement(string text,bool isInput)
+        {
+            HistoryModel.AddElement(text,isInput);
         }
     }
 }
