@@ -14,6 +14,7 @@ namespace Sabanishi.SdiAssignment
         [SerializeField] private RectTransform root;
         [SerializeField] private TMP_InputField inputField;
         [SerializeField] private Button sendButton;
+        [SerializeField] private GameObject explainShiftKeyLabel;
 
         public IObservable<string> OnInputValueChanged => inputField.onValueChanged.AsObservable();
         public IObservable<Unit> OnSendButtonClicked => sendButton.OnClickAsObservable();
@@ -42,7 +43,6 @@ namespace Sabanishi.SdiAssignment
                     }
                     else
                     {
-                        //改行する
                         UniTask.Void(async () =>
                         {
                             inputField.ActivateInputField();
@@ -53,6 +53,11 @@ namespace Sabanishi.SdiAssignment
                     }
                 }
             }).AddTo(token);
+        }
+
+        private void Update()
+        {
+            explainShiftKeyLabel.SetActive(Input.GetKey(KeyCode.LeftShift));
         }
 
         public void Cleanup()
