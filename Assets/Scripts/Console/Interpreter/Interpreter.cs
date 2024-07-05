@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -25,9 +27,17 @@ namespace Sabanishi.SdiAssignment
         /// </summary>
         public async UniTask Interpret(string text)
         {
-            //TODO: 命令の解釈、実行処理
-            await UniTask.Delay(TimeSpan.FromSeconds(1));
-            _outputSubject.OnNext(text + "ぽよ");
+            //改行コードを削除する
+            var command = text.Replace("\n", "");
+            
+            //空白で分割する
+            var args = Regex.Matches(command, @"("".*?""|[^ ""]+)+")
+                .Select(x => x.Groups[0].Value)
+                .ToArray();
+            foreach (var arg in args)
+            {
+                _outputSubject.OnNext(arg);
+            }
         }
     }
 }

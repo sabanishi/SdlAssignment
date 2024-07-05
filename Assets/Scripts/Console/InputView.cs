@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using TMPro;
 using UniRx;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Unit = UniRx.Unit;
 
@@ -23,27 +22,25 @@ namespace Sabanishi.SdiAssignment
 
         public void Setup(CancellationToken token)
         {
+            //文字列の行数が制限に達していた時、末尾の改行を無くす
             OnInputValueChanged.Subscribe(x =>
             {
-                //文字列の行数が制限に達していた時、末尾の改行を無くす
                 if (x.Split("\n").Length > LineLimit)
                 {
                     SetText(x.Substring(0, x.Length - 1));
                 }
             });
-        }
-
-        public void Cleanup()
-        {
-        }
-
-        private void Update()
-        {
-            if (EventSystem.current.currentSelectedGameObject == inputField.gameObject)
+            
+            //Enterキーで改行、Shift+Enterで送信
+            inputField.onEndEdit.AsObservable().Subscribe(x =>
             {
                 if (Input.GetKeyDown(KeyCode.Return))
                 {
                     if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        sendButton.onClick.Invoke();
+                    }
+                    else
                     {
                         //改行する
                         UniTask.Void(async () =>
@@ -54,12 +51,12 @@ namespace Sabanishi.SdiAssignment
                             inputField.MoveTextEnd(false);
                         });
                     }
-                    else
-                    {
-                        sendButton.onClick.Invoke();
-                    }
                 }
-            }
+            }).AddTo(token);
+        }
+
+        public void Cleanup()
+        {
         }
         
         public void SetSendButtonActive(bool isActive)
