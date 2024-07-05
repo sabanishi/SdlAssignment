@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -13,20 +14,50 @@ namespace Sabanishi.SdiAssignment
         [SerializeField] private RectTransform root;
         [SerializeField] private TMP_InputField inputField;
         [SerializeField] private Button sendButton;
+        [SerializeField] private GameObject explainShiftKeyLabel;
 
         public IObservable<string> OnInputValueChanged => inputField.onValueChanged.AsObservable();
         public IObservable<Unit> OnSendButtonClicked => sendButton.OnClickAsObservable();
 
+        private const int LineLimit = 8;
+
         public void Setup(CancellationToken token)
         {
+            //文字列の行数が制限に達していた時、末尾の改行を無くす
             OnInputValueChanged.Subscribe(x =>
             {
-                //文字列の行数が制限に達していた時、末尾の改行を無くす
-                if (x.Split("\n").Length > inputField.lineLimit)
+                if (x.Split("\n").Length > LineLimit)
                 {
                     SetText(x.Substring(0, x.Length - 1));
                 }
             });
+            
+            //Enterキーで改行、Shift+Enterで送信
+            inputField.onEndEdit.AsObservable().Subscribe(x =>
+            {
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        sendButton.onClick.Invoke();
+                    }
+                    else
+                    {
+                        UniTask.Void(async () =>
+                        {
+                            inputField.ActivateInputField();
+                            await UniTask.Yield();
+                            inputField.text += "\n";
+                            inputField.MoveTextEnd(false);
+                        });
+                    }
+                }
+            }).AddTo(token);
+        }
+
+        private void Update()
+        {
+            explainShiftKeyLabel.SetActive(Input.GetKey(KeyCode.LeftShift));
         }
 
         public void Cleanup()

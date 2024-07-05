@@ -37,6 +37,9 @@ namespace Sabanishi.SdiAssignment
 
         public void OnButtonClicked()
         {
+            //入力文字が空の場合は送信しない
+            if (string.IsNullOrEmpty(_inputValue)) return;
+            
             _sendInputTextSubject.OnNext(_inputValue);
             _resetInputSubject.OnNext(Unit.Default);
         }
