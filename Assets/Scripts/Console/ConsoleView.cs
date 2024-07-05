@@ -9,8 +9,14 @@ namespace Sabanishi.SdiAssignment
     {
         [SerializeField] private GameObject root;
         [SerializeField] private Button closeButton;
+
+        [SerializeField] private InputView inputView;
+        [SerializeField] private HistoryView historyView;
         
         public IObservable<Unit> CloseButtonObservable => closeButton.OnClickAsObservable();
+        
+        public InputView InputView => inputView;
+        public HistoryView HistoryView => historyView;
 
         public void Open()
         {

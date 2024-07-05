@@ -2,11 +2,10 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Sabanishi.SdiAssignment
 {
-    public class UiManager:MonoBehaviour
+    public class UiManager:MonoBehaviour,IScopable
     {
         [SerializeField] private CharacterUi characterUi;
         [SerializeField] private MenuUi menuUi;
