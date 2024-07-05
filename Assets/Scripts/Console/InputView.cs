@@ -37,6 +37,11 @@ namespace Sabanishi.SdiAssignment
         {
             sendButton.gameObject.SetActive(isActive);
         }
+        
+        public void SetSendButtonInteractable(bool isInteractable)
+        {
+            sendButton.interactable = isInteractable;
+        }
 
         public void SetInputLine(int line)
         {

@@ -28,6 +28,7 @@ namespace Sabanishi.SdiAssignment
             
             _model.IsOpen.Where(x => x).Subscribe(_ => _view.Open()).AddTo(token);
             _model.IsOpen.Where(x => !x).Subscribe(_ => _view.Close()).AddTo(token);
+            _model.IsAcceptingInput.Subscribe(_view.InputView.SetSendButtonInteractable);
 
             _view.CloseButtonObservable.Subscribe(_ => _model.Close()).AddTo(token);
         }

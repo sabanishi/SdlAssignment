@@ -1,18 +1,20 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UniRx;
-using UnityEngine;
 
 namespace Sabanishi.SdiAssignment
 {
     public class ConsoleModel:IScopable
     {
         private ReactiveProperty<bool> _isOpen;
-        public IReadOnlyReactiveProperty<bool> IsOpen => _isOpen;
+        private ReactiveProperty<bool> _isAcceptingInput;
 
         private readonly Interpreter _interpreter;
         public readonly HistoryModel HistoryModel;
         public readonly InputModel InputModel;
+        
+        public IReadOnlyReactiveProperty<bool> IsOpen => _isOpen;
+        public IReadOnlyReactiveProperty<bool> IsAcceptingInput => _isAcceptingInput;
         
         public ConsoleModel()
         {
@@ -23,18 +25,22 @@ namespace Sabanishi.SdiAssignment
 
         public void Setup(CancellationToken token)
         {
+            _interpreter.Setup(token);
             HistoryModel.Setup(token);
             InputModel.Setup(token);
             _isOpen = new ReactiveProperty<bool>();
+            _isAcceptingInput = new ReactiveProperty<bool>(true);
 
             InputModel.SendInputTextObservable.Subscribe(ReceiveInput).AddTo(token);
         }
         
         public void Cleanup()
         {
+            _interpreter.Cleanup();
             HistoryModel.Cleanup();
             InputModel.Cleanup();
             _isOpen.Dispose();
+            _isAcceptingInput.Dispose();
         }
 
         public void Open()
@@ -52,8 +58,13 @@ namespace Sabanishi.SdiAssignment
         /// </summary>
         private void ReceiveInput(string input)
         {
-            var output = _interpreter.Interpret(input);
-            Debug.Log($"input: {input}, output: {output}");
+            UniTask.Void(async () =>
+            {
+                if (!_isAcceptingInput.Value) return;
+                _isAcceptingInput.Value = false;
+                await _interpreter.Interpret(input);
+                _isAcceptingInput.Value = true;
+            });
         }
     }
 }
