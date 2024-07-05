@@ -3,15 +3,14 @@ using System.Threading;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Sabanishi.SdiAssignment
 {
-    public class CharacterUi:MonoBehaviour
+    public class CharacterUi:MonoBehaviour,IScopable
     {
         [SerializeField] private ObservableEventTrigger playerEvent;
-        
-        private Subject<Unit> _openMenuSubject = new Subject<Unit>();
+
+        private Subject<Unit> _openMenuSubject;
 
         public IObservable<Unit> OpenMenuObservable => _openMenuSubject;
 

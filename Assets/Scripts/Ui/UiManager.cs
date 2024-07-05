@@ -5,28 +5,37 @@ using UnityEngine;
 
 namespace Sabanishi.SdiAssignment
 {
-    public class UiManager:MonoBehaviour
+    public class UiManager:MonoBehaviour,IScopable
     {
         [SerializeField] private CharacterUi characterUi;
-        [SerializeField] private CharacterMenu characterMenu;
-        [SerializeField] private WindowUi windowUi;
+        [SerializeField] private MenuUi menuUi;
+        [SerializeField] private ConsoleView consoleView;
+
+        private ConsoleModel _consoleModel;
+        private ConsolePresenter _consolePresenter;
 
         public void Setup(CancellationToken token)
         {
             characterUi.Setup(token);
-            characterMenu.Setup(token);
-            windowUi.Setup(token);
+            menuUi.Setup(token);
+
+            _consoleModel = new ConsoleModel();
+            _consoleModel.Setup(token);
+            _consolePresenter = new ConsolePresenter(_consoleModel,consoleView);
+            _consolePresenter.Setup(token);
             
-            characterUi.OpenMenuObservable.Subscribe(_=>characterMenu.SetActive(true)).AddTo(token);
-            characterMenu.SetWindowActiveObservable.Subscribe(windowUi.SetActive).AddTo(token);
-            windowUi.IsOpen.Subscribe(characterMenu.SetIsOpenWindow).AddTo(token);
+            characterUi.OpenMenuObservable.Subscribe(_=>menuUi.SetActive(true)).AddTo(token);
+            menuUi.SetConsoleActiveObservable.Where(x=>x).Subscribe(_=>_consoleModel.Open()).AddTo(token);
+            menuUi.SetConsoleActiveObservable.Where(x=>!x).Subscribe(_=>_consoleModel.Close()).AddTo(token);
+            _consoleModel.IsOpen.Subscribe(menuUi.SetIsOpenConsole).AddTo(token);
         }
         
         public void Cleanup()
         {
             characterUi.Cleanup();
-            characterMenu.Cleanup();
-            windowUi.Cleanup();
+            menuUi.Cleanup();
+            _consoleModel.Cleanup();
+            _consolePresenter.Cleanup();
         }
     }
 }
