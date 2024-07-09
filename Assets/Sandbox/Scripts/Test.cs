@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Sabanishi.SdiAssignment
+namespace Sabanishi.SdiAssignment.Sandbox
 {
     public class Test:MonoBehaviour
     {

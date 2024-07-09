@@ -57,7 +57,7 @@ namespace Sabanishi.SdiAssignment
 
         private void Update()
         {
-            explainShiftKeyLabel.SetActive(Input.GetKey(KeyCode.LeftShift));
+            //explainShiftKeyLabel.SetActive(Input.GetKey(KeyCode.LeftShift));
         }
 
         public void Cleanup()
