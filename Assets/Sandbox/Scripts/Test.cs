@@ -17,6 +17,12 @@ namespace Sabanishi.SdiAssignment.Sandbox
 #if UNITY_STANDALONE_OSX
             //transparent();
 #endif
+            
+            //PCの縦横の長さを取得する
+            var width = Screen.currentResolution.width;
+            var height = Screen.currentResolution.height;
+            Debug.Log($"width:{width},height:{height}");
+            Screen.SetResolution(width, height, FullScreenMode.Windowed);
         }
     }
 }
