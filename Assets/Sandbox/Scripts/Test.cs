@@ -21,7 +21,7 @@ namespace Sabanishi.SdiAssignment.Sandbox
             //PCの縦横の長さを取得する
             var width = Screen.currentResolution.width;
             var height = Screen.currentResolution.height;
-            Debug.Log($"width:{width},height:{height}");
+            //Debug.Log($"width:{width},height:{height}");
             Screen.SetResolution(width, height, FullScreenMode.Windowed);
         }
     }

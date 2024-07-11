@@ -34,10 +34,11 @@ namespace Sabanishi.SdiAssignment
             var args = Regex.Matches(command, @"("".*?""|[^ ""]+)+")
                 .Select(x => x.Groups[0].Value)
                 .ToArray();
-            foreach (var arg in args)
-            {
-                _outputSubject.OnNext(arg);
-            }
+            
+            //コマンドを解析する
+            var argMap = new ArgumentMap(args);
+            var executor = new CommandExecutor();
+            executor.Execute(argMap);
         }
     }
 }
