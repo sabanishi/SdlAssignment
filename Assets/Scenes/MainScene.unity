@@ -3395,7 +3395,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &835051755
 Canvas:
   m_ObjectHideFlags: 0
@@ -3432,7 +3432,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1877587027}
-  - {fileID: 2000702670}
   - {fileID: 1140897935}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3453,7 +3452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6242995692e488483cb99bc2dc42336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterUi: {fileID: 2000702669}
+  characterUi: {fileID: 1828000460}
   menuUi: {fileID: 1140897940}
   consoleView: {fileID: 1877587028}
 --- !u!1 &841851165
@@ -8698,6 +8697,35 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2118991046339710494, guid: 7916bfe117dc5460583943c1a1e1bac6, type: 3}
   m_PrefabInstance: {fileID: 2113597168}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1828000459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467625856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 267f214e5e874747826d6a0c1da2a119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelRoot: {fileID: 2113597169}
+  camera: {fileID: 1095308164}
+--- !u!114 &1828000460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 467625856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 459f6eabd66649fb9184c40c3ce600a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 1095308164}
+  cubismRaycaster: {fileID: 595991212}
+  characterMover: {fileID: 1828000459}
 --- !u!1 &1841090087
 GameObject:
   m_ObjectHideFlags: 0
@@ -10251,57 +10279,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Precision: 0
---- !u!1 &2000702668
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2000702670}
-  - component: {fileID: 2000702669}
-  m_Layer: 5
-  m_Name: group-Character
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2000702669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000702668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 459f6eabd66649fb9184c40c3ce600a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camera: {fileID: 1095308164}
-  cubismRaycaster: {fileID: 595991212}
-  modelRoot: {fileID: 2113597169}
---- !u!224 &2000702670
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000702668}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 835051756}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -307.00006, y: 206}
-  m_SizeDelta: {x: 535.9547, y: 421.112}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2004448319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11046,6 +11023,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4657313288054248945, guid: 7916bfe117dc5460583943c1a1e1bac6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 595991212}
+    - targetCorrespondingSourceObject: {fileID: 4657313288054248945, guid: 7916bfe117dc5460583943c1a1e1bac6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828000460}
+    - targetCorrespondingSourceObject: {fileID: 4657313288054248945, guid: 7916bfe117dc5460583943c1a1e1bac6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1828000459}
     - targetCorrespondingSourceObject: {fileID: 2441055499031515774, guid: 7916bfe117dc5460583943c1a1e1bac6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2113597219}
