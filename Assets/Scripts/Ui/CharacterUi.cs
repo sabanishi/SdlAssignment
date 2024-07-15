@@ -10,7 +10,7 @@ namespace Sabanishi.SdiAssignment
     {
         [SerializeField] private Camera camera;
         [SerializeField] private CubismRaycaster cubismRaycaster;
-        [SerializeField] private Transform modelRoot;
+        [SerializeField] private CharacterMover characterMover;
 
         private Subject<Unit> _openMenuSubject;
 
@@ -33,19 +33,18 @@ namespace Sabanishi.SdiAssignment
                 var ray = camera.ScreenPointToRay(Input.mousePosition);
                 var results = new CubismRaycastHit[4];
                 var hitCount = cubismRaycaster.Raycast(ray, results);
-                if (hitCount <= 0) return;
-                if (Input.GetMouseButtonDown(1))
+                if (hitCount > 0)
                 {
-                    _openMenuSubject?.OnNext(Unit.Default);
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        _openMenuSubject?.OnNext(Unit.Default);
+                    }
+                    characterMover.SetIsDragging(true);
                 }
-
-                if (Input.GetMouseButton(0))
-                {
-                    //モデルの位置をマウスの位置に合わせる
-                    var mousePosition = Input.mousePosition;
-                    var worldPosition = camera.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 10));
-                    modelRoot.position = worldPosition;
-                }
+            }
+            else
+            {
+                characterMover.SetIsDragging(false);
             }
         }
     }
