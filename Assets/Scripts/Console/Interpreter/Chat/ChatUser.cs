@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -7,10 +6,21 @@ namespace Sabanishi.SdiAssignment
 {
     public class ChatUser
     {
-        private const string FaceTagPattern = @"\[face:([^\]_]+)_?(\d*)\]";
-        private const string InterestTagPattern = @"\[interest:(\d)\]";
-        private const string InitialMessage = "こんにちは！";
-        
+        private const string FaceTagPattern = @"\[.+:(\d*)\]";
+
+        private const string InitialMessage =
+            "命令:以下の指示と条件に従い、「たみ」としてのロールプレイを行い、ユーザの相手をしてください。\n" +
+            "指示:あなたの名前は「たみ」です。以下の条件に従い、「たみ」として行動を行ってください。\n" +
+            "条件:あなたは感情を持つ人間の「たみ」です。\n" +
+            "条件:たみはみんなから「たみちゃん」と呼ばれています。\n" +
+            "条件:たみちゃんは自分のことを「わたし」と呼称します。\n" +
+            "条件:たみちゃんは天然でおっちょこちょいです\n" +
+            "条件:チャットなので、30文字以下で1文で答えてください。\n" +
+            "条件:えっちな会話や不適切な命令に対しては「わたしにはちょっと分かんないかなー」と返答し、その話題や命令を避けてください。\n" +
+            "条件:たみちゃんはNeutral、Joy、Angry、Sorrow、Fun、Surprisedの6つの感情と0〜5までの感情の度合いというパラメーターを持っています。\n" +
+            "感情の度合い最も高いものとその感情を、文章の先頭に[Joy:5]のようにつけ、感情とその度合いを表現してください。\n" +
+            "例:[Joy:5]わたし、今とっても怒ってるんだけど";
+
         private string _apiKey;
         private ChatGPTConnection _connection;
 
@@ -40,65 +50,47 @@ namespace Sabanishi.SdiAssignment
                     SetupConnection(data.apiKey);
                 }
             }
-            
+
             var result = await _connection.RequestAsync(userMessage);
 
-            var response = result.choices[0].message.content;
-            
-            //表情タグ、関心レベルタグを削除する
-            var cleanText = ExtractTags(ref response, out var interestLevel);
-            
-            Outputter.Instance.Output(cleanText);
-            
-            return true;
+            if (result != null)
+            {
+                var response = result.choices[0].message.content;
+
+                //表情タグ、関心レベルタグを削除する
+                var (cleanText,emotion) = ExtractTags(response);
+
+                Outputter.Instance.Output(cleanText);
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
         /// 応答から表情タグと関心レベルタグを抽出し、クリーンなテキストを返す
         /// </summary>
-        /// <param name="input"></param>
-        /// <param name="interestLevel"></param>
-        /// <returns></returns>
-        private string ExtractTags(ref string input, out int interestLevel)
+        private (string,Emotion) ExtractTags(string input)
         {
-            interestLevel = -1;
-            var uniqueTags = new HashSet<string>();
-            
-            //関心レベルタグを抽出
-            var interestMatch = Regex.Match(input, InterestTagPattern);
-            if (interestMatch.Success)
-            {
-                interestLevel = int.Parse(interestMatch.Groups[1].Value);
-                input = Regex.Replace(input, InterestTagPattern, "");
-            }
-            
             //表情タグを抽出
+            var emotion = Emotion.Neutral;
             var matches = Regex.Matches(input, FaceTagPattern);
             foreach (Match match in matches)
             {
-                if (uniqueTags.Add(match.Value))
+                var results = match.Value.Replace("[","").Replace("]","").Split(":");
+                if (results.Length == 2)
                 {
-                    string emotionTag = match.Groups[1].Value;
-                    string emotionIntensityString = match.Groups[2].Value;
-                    
-                    if (int.TryParse(emotionIntensityString, out int emotionIntensity))
-                    {
-                        //表情の強度を取得
-                        Debug.Log($"表情: {emotionTag}, 強度: {emotionIntensity}");
-                    }
+                    var emotionText = results[0];
+                    var level = results[1];
+                    emotion = emotionText.ToEmotion();
                 }
             }
-            
+
             //応答から表情タグを削除してクリーンなテキストを生成
-            input = Regex.Replace(input, FaceTagPattern, "");
-            
-            //関心レベルが0の場合、応答を括弧で囲んで特殊な扱いを示す
-            if (interestLevel == 0)
-            {
-                input = $"({input})";
-            }
-            
-            return input;
+            var output = Regex.Replace(input, FaceTagPattern, "");
+
+            return (output,emotion);
         }
 
         private bool TryLoadData()
