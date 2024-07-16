@@ -19,11 +19,13 @@ namespace Sabanishi.SdiAssignment
         public void Setup(CancellationToken token)
         {
             _openMenuSubject = new Subject<Unit>();
+            characterMover.Setup();
         }
 
         public void Cleanup()
         {
             _openMenuSubject.Dispose();
+            characterMover.Cleanup();
         }
 
         private void Update()
