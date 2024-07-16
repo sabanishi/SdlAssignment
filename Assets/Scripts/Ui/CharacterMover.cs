@@ -19,7 +19,19 @@ namespace Sabanishi.SdiAssignment
         public void Setup()
         {
             _isDragging = new ReactiveProperty<bool>(false);
-            IsDraggingObserver.Subscribe(animatorController.SetIsDragging).AddTo(gameObject);
+            IsDraggingObserver.Where(x => !x).Subscribe(x =>
+            {
+                animatorController.SetIsDragging(false);
+                CharacterBoringController.Instance.ResetCounter();
+            }).AddTo(gameObject);
+
+            //_isDraggingが0.2秒以上続けてtrueになった時の処理
+            IsDraggingObserver.Throttle(TimeSpan.FromSeconds(0.2f)).Where(x => x).Subscribe(x =>
+            {
+                animatorController.SetIsDragging(true);
+                CharacterBoringController.Instance.ResetCounter();
+            }).AddTo(gameObject);
+
         }
 
         public void Cleanup()

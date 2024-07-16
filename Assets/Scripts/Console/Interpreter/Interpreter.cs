@@ -30,6 +30,8 @@ namespace Sabanishi.SdiAssignment
         /// </summary>
         public async UniTask Interpret(string text)
         {
+            CharacterBoringController.Instance.ResetCounter();
+            
             //改行コードを削除する
             var command = text.Replace("\n", "");
             
