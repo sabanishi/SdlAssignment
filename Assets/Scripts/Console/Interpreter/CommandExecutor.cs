@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Unity.VisualScripting;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Sabanishi.SdiAssignment
@@ -20,7 +20,7 @@ namespace Sabanishi.SdiAssignment
             }
         }
         
-        public bool Execute(ArgumentMap map)
+        public async UniTask<bool> Execute(ArgumentMap map)
         {
             //mapの_mainArgsの最初の要素を取得
             var maps = map.GetMainArgs();
@@ -63,6 +63,12 @@ namespace Sabanishi.SdiAssignment
                 if (maps.Count == 1)
                 {
                     //サブコマンドがない場合
+                    //クラスがIRunnableを実装している場合、Runを実行する
+                    if (type.GetInterfaces().Contains(typeof(IRunnable)))
+                    {
+                        var instance = Activator.CreateInstance(type);
+                        return await ((IRunnable)instance).Run();
+                    }
                 }
                 else
                 {
@@ -104,7 +110,7 @@ namespace Sabanishi.SdiAssignment
                         
                         //関数を実行する
                         var instance = Activator.CreateInstance(type);
-                        memberInfo.Invoke(instance,objects);
+                        return await (UniTask<bool>)memberInfo.Invoke(instance,objects);
                     }
                 }
             }

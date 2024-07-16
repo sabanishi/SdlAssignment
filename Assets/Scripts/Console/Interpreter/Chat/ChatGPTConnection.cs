@@ -58,18 +58,31 @@ namespace Sabanishi.SdiAssignment
             {
                 request.SetRequestHeader(header.Key,header.Value);
             }
-            
-            await request.SendWebRequest();
-            
-            if(request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+
+            try
             {
-                throw new Exception(request.error);
+                await request.SendWebRequest();
+                if(request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+                {
+                    throw new Exception(request.error);
+                }
+
+                var responseString = request.downloadHandler.text;
+                var responseObject = JsonUtility.FromJson<ChatGPTResponceModel>(responseString);
+                _messageList.Add(responseObject.choices[0].message);
+                return responseObject;
+            }
+            catch (Exception e)
+            {
+                //401エラーの時
+                if (e.Message.Contains("401"))
+                {
+                    await UniTask.Delay(500);
+                    Outputter.Instance.Output("APIキーが間違っているみたいだね...");
+                }
             }
 
-            var responseString = request.downloadHandler.text;
-            var responseObject = JsonUtility.FromJson<ChatGPTResponceModel>(responseString);
-            _messageList.Add(responseObject.choices[0].message);
-            return responseObject;
+            return null;
         }
     }
 }

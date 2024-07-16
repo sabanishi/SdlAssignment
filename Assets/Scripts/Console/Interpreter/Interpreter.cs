@@ -40,8 +40,32 @@ namespace Sabanishi.SdiAssignment
             
             //コマンドを解析する
             var argMap = new ArgumentMap(args);
-            var executor = new CommandExecutor();
-            executor.Execute(argMap);
+            
+            //MainArgsの第一要素を取得
+            var mainArgs = argMap.GetMainArgs();
+            if (mainArgs.Count > 0)
+            {
+                var mainCommand = mainArgs[0];
+                //mainCommandが「！」で始まる場合、Executorを起動する
+                if (mainCommand.StartsWith("!"))
+                {
+                    var executor = new CommandExecutor();
+                    var canExecute = await executor.Execute(argMap);
+                    if (canExecute) return;
+                    
+                    await UniTask.Delay(500);
+                    Output("命令の形式が間違ってるみたい...");
+                    return;
+                }
+            }
+            
+            //おしゃべり機能を起動する
+            await _chatUser.TryRequest(text);
+        }
+        
+        public void Output(string message)
+        {
+            _outputSubject.OnNext(message);
         }
     }
 }
