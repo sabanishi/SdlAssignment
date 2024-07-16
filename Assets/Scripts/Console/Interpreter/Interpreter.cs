@@ -9,11 +9,14 @@ namespace Sabanishi.SdiAssignment
 {
     public class Interpreter:IScopable
     {
+        private ChatUser _chatUser;
+        
         private Subject<string> _outputSubject;
         public IObservable<string> OutputObservable => _outputSubject;
         
         public void Setup(CancellationToken token)
         {
+            _chatUser = new ChatUser();
             _outputSubject = new Subject<string>();
         }
         
