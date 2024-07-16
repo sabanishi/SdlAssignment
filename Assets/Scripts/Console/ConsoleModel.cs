@@ -21,6 +21,8 @@ namespace Sabanishi.SdiAssignment
             _interpreter = new Interpreter();
             HistoryModel = new HistoryModel();
             InputModel = new InputModel();
+            
+            Outputter.Boot(_interpreter);
         }
 
         public void Setup(CancellationToken token)
