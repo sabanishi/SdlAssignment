@@ -221,9 +221,9 @@ namespace Live2D.Cubism.Framework.MotionFade
                 playingMotion.Speed = 1.0f;
                 playingMotion.StartTime = Time.time;
                 playingMotion.FadeInStartTime = Time.time;
-                playingMotion.EndTime = (playingMotion.Motion.MotionLength <= 0)
-                                        ? -1
-                                        : playingMotion.StartTime + playingMotion.Motion.MotionLength;
+                playingMotion.EndTime = (playingMotion.Motion==null || playingMotion.Motion.MotionLength <= 0)
+                    ? -1
+                    : playingMotion.StartTime + playingMotion.Motion.MotionLength;
                 playingMotion.IsLooping = animatorClipInfo[i].clip.isLooping;
                 playingMotion.Weight = 0.0f;
 

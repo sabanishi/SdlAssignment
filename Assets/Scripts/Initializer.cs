@@ -6,6 +6,11 @@ namespace Sabanishi.SdiAssignment
     public class Initializer:MonoBehaviour
     {
         [SerializeField] private UiManager uiManager;
+
+        private void Awake()
+        {
+            SaveSubject.Boot();
+        }
         
         private void Start()
         {
@@ -15,6 +20,7 @@ namespace Sabanishi.SdiAssignment
         private void OnDestroy()
         {
             uiManager.Cleanup();
+            SaveSubject.Dispose();
         }
     }
 }

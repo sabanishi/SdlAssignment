@@ -15,6 +15,7 @@ namespace Sabanishi.SdiAssignment
             string json = JsonUtility.ToJson(saveData);
             PlayerPrefs.SetString(path, json);
             PlayerPrefs.Save();
+            SaveSubject.Instance.OnNext<T>();
             return true;
         }
 
