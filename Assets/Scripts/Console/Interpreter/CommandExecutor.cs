@@ -9,17 +9,6 @@ namespace Sabanishi.SdiAssignment
 {
     public class CommandExecutor
     {
-        private IEnumerable<Command> _mainCommands;
-
-        public IEnumerable<Command> MainCommands
-        {
-            get
-            {
-                if (_mainCommands != null) return _mainCommands;
-                return null;
-            }
-        }
-        
         public async UniTask<bool> Execute(ArgumentMap map)
         {
             //mapの_mainArgsの最初の要素を取得
@@ -38,7 +27,6 @@ namespace Sabanishi.SdiAssignment
                 var fields = type.GetFields();
                 foreach (var field in fields)
                 {
-                    Debug.Log(field.Name);
                     var option = field.GetCustomAttribute<Option>();
                     if (option != null)
                     {
