@@ -152,16 +152,19 @@ namespace Live2D.Cubism.Framework.MotionFade
                 var latestPlayingMotion = playingMotions[playingMotions.Count - 1];
 
                 var playingMotionData = latestPlayingMotion.Motion;
-                var elapsedTime = time - latestPlayingMotion.StartTime;
-                for (var j = 0; j < playingMotionData.ParameterFadeInTimes.Length; j++)
+                if (playingMotionData != null)
                 {
-                    if ((elapsedTime <= playingMotionData.FadeInTime) ||
-                        ((0 <= playingMotionData.ParameterFadeInTimes[j]) &&
-                         (elapsedTime <= playingMotionData.ParameterFadeInTimes[j])) ||
-                        !_fadeStates[i].GetStateTransitionFinished())
+                    var elapsedTime = time - latestPlayingMotion.StartTime;
+                    for (var j = 0; j < playingMotionData.ParameterFadeInTimes.Length; j++)
                     {
-                        _isFading[i] = true;
-                        break;
+                        if ((elapsedTime <= playingMotionData.FadeInTime) ||
+                            ((0 <= playingMotionData.ParameterFadeInTimes[j]) &&
+                             (elapsedTime <= playingMotionData.ParameterFadeInTimes[j])) ||
+                            !_fadeStates[i].GetStateTransitionFinished())
+                        {
+                            _isFading[i] = true;
+                            break;
+                        }
                     }
                 }
             }

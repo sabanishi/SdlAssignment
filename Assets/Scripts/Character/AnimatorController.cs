@@ -8,6 +8,7 @@ namespace Sabanishi.SdiAssignment
         private static readonly int IsAwaawa = Animator.StringToHash("is_awaawa");
         private static readonly int IsBoring = Animator.StringToHash("is_boring");
         private static readonly int BoringRand = Animator.StringToHash("boring_rand");
+        private static readonly int IsDance = Animator.StringToHash("is_dance");
 
         public void SetIsDragging(bool isDragging)
         {
@@ -22,6 +23,11 @@ namespace Sabanishi.SdiAssignment
         public void SetBoringRand(int rand)
         {
             animator.SetFloat(BoringRand, rand);
+        }
+        
+        public void SetIsDance(bool isDance)
+        {
+            animator.SetBool(IsDance, isDance);
         }
     }
 }
