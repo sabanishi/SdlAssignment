@@ -43,7 +43,6 @@ namespace Sabanishi.SdiAssignment
             //現在の画面サイズを取得する
             var screenSize = new Vector2(Screen.width, Screen.height);
             var screenWidth = screenSize.x;
-            var screenHeight = screenSize.y;
 
             var scale = width / screenWidth * 1600/1180f;
             
