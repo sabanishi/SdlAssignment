@@ -118,3 +118,13 @@ Example
 ```
 !console_size -w 1000 -h 500
 ```
+
+#### Delete Save Data
+
+- This command deletes all data(OpenAI API,Git Path,...)
+
+Command
+- `!delete_data`
+
+Arguments
+- None
