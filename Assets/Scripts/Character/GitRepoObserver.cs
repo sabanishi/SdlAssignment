@@ -14,7 +14,7 @@ namespace Sabanishi.SdiAssignment
         
         private List<GitRepo> _repos;
 
-        private const float AnimationTime = 3.0f;
+        private const float AnimationTime = 2.6f;
         private float _animationTime;
 
         private void Start()
