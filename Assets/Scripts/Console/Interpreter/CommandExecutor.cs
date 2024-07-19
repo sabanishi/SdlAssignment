@@ -23,6 +23,7 @@ namespace Sabanishi.SdiAssignment
             //CommandのNameがmainCommandと一致するクラスを探す
             if (TrySearchMainCommand(mainCommandName, out var mainCommand,out var type))
             {
+                var instance = Activator.CreateInstance(type);
                 //クラス中のOption属性を持つフィールドを全て取得
                 var fields = type.GetFields();
                 foreach (var field in fields)
@@ -35,13 +36,13 @@ namespace Sabanishi.SdiAssignment
                             //mapの_optionMapにnameがある場合、fieldに値を代入
                             if (map.TryGetOption(name,out var result))
                             {
-                                field.SetValue(null,result);
+                                field.SetValue(instance,result);
                             }
                             
                             //mapの_optionSwitchesにnameがある場合、fieldに値を設定
                             if (map.HasSwitch(name))
                             {
-                                field.SetValue(null,true);
+                                field.SetValue(instance,true);
                             }
                         }
                     }
@@ -54,7 +55,6 @@ namespace Sabanishi.SdiAssignment
                     //クラスがIRunnableを実装している場合、Runを実行する
                     if (type.GetInterfaces().Contains(typeof(IRunnable)))
                     {
-                        var instance = Activator.CreateInstance(type);
                         return await ((IRunnable)instance).Run();
                     }
                 }
@@ -97,7 +97,6 @@ namespace Sabanishi.SdiAssignment
                         }).ToArray();
                         
                         //関数を実行する
-                        var instance = Activator.CreateInstance(type);
                         return await (UniTask<bool>)memberInfo.Invoke(instance,objects);
                     }
                 }
@@ -105,7 +104,7 @@ namespace Sabanishi.SdiAssignment
 
             return false;
         }
-
+        
         private bool TrySearchSubCommand(Type classType,string commandName, out Command command,out MethodInfo methodInfo)
         {
             command = null;
