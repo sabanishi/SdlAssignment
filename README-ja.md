@@ -11,9 +11,8 @@ Releasesから最新のバージョンの物をダウンロードして使用し
 zipファイルを解答し、TampChan.appを実行してください。
 以下のような警告が出た場合、システム設定から「プライバシーとセキュリティ」を開き、「このまま開く」を押してください。
 
-![Image2](images/image2.png)
-![Image3](images/image3.png)
-
+<img src="images/image2.png" width=60%>
+<img src="images/image3.png" width=60%>
 ## System Requirements
 
 Mac OS()
