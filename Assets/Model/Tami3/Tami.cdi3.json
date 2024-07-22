@@ -232,14 +232,6 @@
 	],
 	"CombinedParameters": [
 		[
-			"ParamEyeLOpen",
-			"ParamEyeLSmile"
-		],
-		[
-			"ParamEyeROpen",
-			"ParamEyeRSmile"
-		],
-		[
 			"ParamArmL01",
 			"ParamArmL02"
 		],
