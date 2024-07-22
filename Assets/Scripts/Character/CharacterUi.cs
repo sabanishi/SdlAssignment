@@ -11,6 +11,7 @@ namespace Sabanishi.SdiAssignment
         [SerializeField] private Camera camera;
         [SerializeField] private CubismRaycaster cubismRaycaster;
         [SerializeField] private CharacterMover characterMover;
+        [SerializeField] private NadeNadeController nadeNadeController;
 
         private Subject<Unit> _openMenuSubject;
 
@@ -30,23 +31,25 @@ namespace Sabanishi.SdiAssignment
 
         private void Update()
         {
+            var ray = camera.ScreenPointToRay(Input.mousePosition);
+            var results = new CubismRaycastHit[4];
+            var hitCount = 0;
             if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
-                var ray = camera.ScreenPointToRay(Input.mousePosition);
-                var results = new CubismRaycastHit[4];
-                var hitCount = cubismRaycaster.Raycast(ray, results);
+                hitCount = cubismRaycaster.Raycast(ray, results);
+            }
+            
+            characterMover.UpdateRaycaster(hitCount,results);
+            
+            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            {
                 if (hitCount > 0)
                 {
                     if (Input.GetMouseButtonDown(1))
                     {
                         _openMenuSubject?.OnNext(Unit.Default);
                     }
-                    characterMover.SetIsDragging(true);
                 }
-            }
-            else
-            {
-                characterMover.SetIsDragging(false);
             }
         }
     }

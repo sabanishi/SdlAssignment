@@ -1,4 +1,5 @@
 using System;
+using Live2D.Cubism.Framework.Raycasting;
 using UniRx;
 using UnityEngine;
 
@@ -38,8 +39,22 @@ namespace Sabanishi.SdiAssignment
         {
             _isDragging.Dispose();
         }
+
+        public void UpdateRaycaster(int hitCount,CubismRaycastHit[] result)
+        {
+            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            {
+                if (hitCount > 0)
+                {
+                    SetIsDragging(true);
+                    return;
+                }
+            }
+            
+            SetIsDragging(false);
+        }
         
-        public void SetIsDragging(bool isDragging)
+        private void SetIsDragging(bool isDragging)
         {
             var catchDrag = _isDragging.Value;
             _isDragging.Value = isDragging;
