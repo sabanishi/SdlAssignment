@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 403ae2dd693bb1d4b924f6b8d206b053, type: 3}
   m_Name: Tami3.fadeMotionList
   m_EditorClassIdentifier: 
-  MotionInstanceIds: 0676feffd075feffa875feffe8bffffff854fdff
+  MotionInstanceIds: fa8e0000f68e0000508e0000108f0000fe8e0000
   CubismFadeMotionObjects:
   - {fileID: 11400000, guid: 41749d292fee141edadea788c17e648b, type: 2}
   - {fileID: 11400000, guid: 299304eba1cb5493e814b9dee7ceedac, type: 2}
